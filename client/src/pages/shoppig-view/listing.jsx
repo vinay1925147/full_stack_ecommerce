@@ -1,5 +1,5 @@
 import Productfilter from "@/components/shoppig-view/filter";
-import ProductDetailsDialog from "@/components/shoppig-view/product-details";
+// import ProductDetailsDialog from "@/components/shoppig-view/product-details";
 import ShoppingProductTile from "@/components/shoppig-view/product-tile";
 
 import { Button } from "@/components/ui/button";
@@ -155,11 +155,11 @@ function Shoppinglist() {
 
         </div>
 
-        <ProductDetailsDialog
+        {/* <ProductDetailsDialog
           open={openDetailsDialog}
           setOpen={setOpenDetailsDialog}
           productDetails={productDetails}
-        />
+        /> */}
       </div>
     </>
   );

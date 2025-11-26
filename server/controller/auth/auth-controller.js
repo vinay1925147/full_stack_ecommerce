@@ -53,7 +53,7 @@ export const login = async (req, res) => {
     }
     // token generate
     const token = genrateToken(user);
-    // console.log(token);
+    console.log(token);
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,

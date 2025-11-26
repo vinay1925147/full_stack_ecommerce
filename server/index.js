@@ -1,21 +1,19 @@
-import express from "express";
-import mongoose from "mongoose";
-import authRoute from './routes/auth/auth-route.js';
-import adminRoute from './routes/admin/product-route.js'
-import shopRoute from './routes/shop/product-route.js'
-import cors from 'cors'
-import cookieParser from 'cookie-parser'
-const app = express();
-const port = 8000;
-
 import dotenv from "dotenv";
 dotenv.config();
 
- 
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import express from "express";
+import mongoose from "mongoose";
+import adminRoute from "./routes/admin/product-route.js";
+import authRoute from "./routes/auth/auth-route.js";
+import shopRoute from "./routes/shop/product-route.js";
+const app = express();
+const port = process.env.PORT;
+console.log(process.env.PORT , process.env.MONGODB_URL , process.env.SECRET_KEY)
+
 mongoose
-  .connect(
-    "mongodb+srv://vinayasati5_db_user:Vinay%40123@cluster0.4dg2kip.mongodb.net/yourDBname"
-  )
+  .connect(process.env.MONGODB_URL) 
   .then(() => {
     console.log("connected to database");
   })
@@ -23,19 +21,24 @@ mongoose
     console.error("mongo error:", err);
   });
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}))
-app.use(cookieParser())
-app.use(express.urlencoded({extended:true}))
-app.use(express.json())
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
+app.get('/api',(req,res)=>{
+   res.send("Hello World")
+})
 app.use("/api/auth", authRoute);
-app.use("/api/admin/product",adminRoute);
-app.use("/api/shop/product",shopRoute);
+app.use("/api/admin/product", adminRoute);
+app.use("/api/shop/product", shopRoute);
 
-app.listen(port, () => {
+app.listen(8000, () => {
   console.log("server is started");
 });

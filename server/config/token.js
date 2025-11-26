@@ -1,5 +1,9 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import jwt from "jsonwebtoken";
-const secretKey = "VInay@#123";
+const secretKey = process.env.SECRET_KEY;
+console.log(secretKey,"SECRET_KEY")
  export const genrateToken =(user)=>{
     const payload = {
         id:user._id,
