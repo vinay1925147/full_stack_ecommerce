@@ -1,15 +1,17 @@
 import { shoppingViewHeaderMenuItems } from "@/config";
 import { logoutUser } from "@/store/auth-slice";
 // import { fetchCartItems } from "@/store/shop/cart-slice";
-import { CircleStar, HousePlug, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
+import {
+  CircleStar,
+  HousePlug,
+  LogOut,
+  Menu,
+  ShoppingCart,
+  UserCog,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Button } from "../ui/button";
 import {
@@ -21,9 +23,9 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 // import { Label } from "../ui/label";
+import { getCartItems } from "@/store/shop/cart-slice";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-// import UserCartWrapper from "./cart-wrapper";
-
+import UserCartWrapper from "./cart-wrapper";
 
 function MenuItems() {
   const navigate = useNavigate();
@@ -60,7 +62,13 @@ function MenuItems() {
         // >
         //  {menuItem.label}
         // </Label>
-        <Link to={menuItem.path} key={menuItem.id} className="text-xl font-medium cursor-pointer" >{menuItem.label}</Link>
+        <Link
+          to={menuItem.path}
+          key={menuItem.id}
+          className="text-xl font-medium cursor-pointer"
+        >
+          {menuItem.label}
+        </Link>
       ))}
     </nav>
   );
@@ -68,9 +76,10 @@ function MenuItems() {
 
 function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
-  console.log(user)
-  // const { cartItems } = useSelector((state) => state.shopCart);
-  // const [openCartSheet, setOpenCartSheet] = useState(false);
+  const { cartItems } = useSelector((state) => state.shopCart);
+  // console.log(cartItems)
+  const [openCartSheet, setOpenCartSheet] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -78,23 +87,24 @@ function HeaderRightContent() {
     dispatch(logoutUser());
   }
 
-  // useEffect(() => {
-  //   dispatch(fetchCartItems(user?.id));
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getCartItems(user?.id));
+  }, [dispatch]);
 
-  // console.log(cartItems, "sangam");
-   
-  const handleCart = ()=>{}
+  console.log(cartItems, "catItem");
+
+  const handleCart = () => {};
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
-      {/* <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
+      {/* cart option */}
+      <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)} className="w-5/6">
         <Button
           onClick={() => setOpenCartSheet(true)}
           variant="outline"
           size="icon"
-          className="relative"
+          className="relative p-4 cursor-pointer"
         >
-          <ShoppingCart className="w-6 h-6" />
+          <ShoppingCart className="w-9 h-9 " />
           <span className="absolute top-[-5px] right-0.5 font-bold text-sm">
             {cartItems?.items?.length || 0}
           </span>
@@ -108,24 +118,26 @@ function HeaderRightContent() {
               : []
           }
         />
-      </Sheet> */}
-    <ShoppingCart className="mr-2 w-8 h-6" onClick={handleCart}/>
+      </Sheet>
+      {/* profile account */}
       <DropdownMenu className="m-5">
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-gray-900">
             <AvatarFallback className="bg- text text-white font-extrabold">
-              {user?.email[0].toUpperCase()} 
+              {user?.email[0].toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent side="top" className="w-56 mt-2 mr-5">
-          <DropdownMenuLabel className="font-extrabold text-17px">Logged in as {user?.role}</DropdownMenuLabel>
+          <DropdownMenuLabel className="font-extrabold text-17px">
+            Logged in as {user?.role}
+          </DropdownMenuLabel>
 
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => navigate("/shop/account")}>
             <UserCog className="mr-2 h-4 w-4" />
-             Account
+            Account
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />
@@ -134,12 +146,11 @@ function HeaderRightContent() {
             Logout
           </DropdownMenuItem>
 
-           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={()=> navigate("/shop/order")}>
-            <CircleStar className="mr-2 h-4 w-4"/>
-             MyOrder
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => navigate("/shop/order")}>
+            <CircleStar className="mr-2 h-4 w-4" />
+            MyOrder
           </DropdownMenuItem>
-
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
@@ -167,7 +178,7 @@ function ShoppingHeader() {
           </SheetTrigger>
           <SheetContent side="left" className="w-60 max-w-xs px-7 py-8">
             <MenuItems />
-            <HeaderRightContent/>
+            <HeaderRightContent />
           </SheetContent>
         </Sheet>
 
@@ -180,7 +191,6 @@ function ShoppingHeader() {
         <div className="hidden lg:block">
           <HeaderRightContent />
         </div>
-        
       </div>
     </header>
   );

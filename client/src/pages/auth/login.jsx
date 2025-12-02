@@ -46,7 +46,7 @@ function Login() {
         />
 
         <div className="flex items-center justify-center gap-2 mt-1">
-          <p>have not account ?</p>
+          <p>haven't account ?</p>
           <Link
             to="/auth/register"
             className=" font-medium ml-2 text-primary hover:text-blue-600"
@@ -54,7 +54,7 @@ function Login() {
             Register
           </Link>
         </div>
-      </div>
+      </div>''
     </div>
   );
 }

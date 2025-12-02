@@ -55,7 +55,9 @@ export const deleteProduct = createAsyncThunk(
 const adminProductSlice = createSlice({
   name: "adminProduct",
   initialState,
-  reducers: {},
+  reducers: {
+    
+  },
   extraReducers: (builder) => {
     builder
       // Get all products

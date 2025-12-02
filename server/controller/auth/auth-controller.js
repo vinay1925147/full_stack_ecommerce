@@ -4,7 +4,7 @@ import User from "../../models/user.js";
 // register
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const checkUser = await User.findOne({ email });
     if (checkUser) {

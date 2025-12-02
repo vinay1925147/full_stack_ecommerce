@@ -30,7 +30,7 @@ export const getProductDetails = createAsyncThunk(
       `http://localhost:8000/api/shop/product/get/${id}`,
       { withCredentials: true }
     );
-    console.log(response.data);
+    // console.log(response.data);
   
     return response.data;
   }
@@ -38,7 +38,12 @@ export const getProductDetails = createAsyncThunk(
 const shoppingProductSlice = createSlice({
   name: "shoppingProducts",
   initialState,
-  reducers: {},
+  reducers: {
+    setProductDetails : (state,action)=>{
+      state.productDetails=null
+
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllFilterProduct.pending, (state) => {
@@ -65,5 +70,5 @@ const shoppingProductSlice = createSlice({
       });
   },
 });
-
+ export const {setProductDetails} = shoppingProductSlice.actions;
 export default shoppingProductSlice.reducer;

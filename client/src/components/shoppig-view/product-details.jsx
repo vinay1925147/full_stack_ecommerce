@@ -1,31 +1,30 @@
-// import { StarIcon } from "lucide-react";
+// import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
+// import { useDispatch, useSelector } from "react-redux";
 // import { Avatar, AvatarFallback } from "../ui/avatar";
 // import { Button } from "../ui/button";
 // import { Dialog, DialogContent } from "../ui/dialog";
-// import { Separator } from "../ui/separator";
 // import { Input } from "../ui/input";
-// import { useDispatch, useSelector } from "react-redux";
-// import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
+// import { Separator } from "../ui/separator";
 
 // import { setProductDetails } from "@/store/shop/products-slice";
 // import { Label } from "../ui/label";
-// import StarRatingComponent from "../common/star-rating";
+// // import StarRatingComponent from "../common/star-rating";
+// // import { addReview, getReviews } from "@/store/shop/review-slice";
 // import { useEffect, useState } from "react";
-// import { addReview, getReviews } from "@/store/shop/review-slice";
+// import { toast } from "react-toastify";
 
 // function ProductDetailsDialog({ open, setOpen, productDetails }) {
-//   const [reviewMsg, setReviewMsg] = useState("");
-//   const [rating, setRating] = useState(0);
+//   // const [reviewMsg, setReviewMsg] = useState("");
+//   // const [rating, setRating] = useState(0);
 //   const dispatch = useDispatch();
 //   const { user } = useSelector((state) => state.auth);
 //   const { cartItems } = useSelector((state) => state.shopCart);
-//   const { reviews } = useSelector((state) => state.shopReview);
+//   // const { reviews } = useSelector((state) => state.shopReview);
 
-
-//   function handleRatingChange(getRating) {
-//     console.log(getRating, "getRating");
-//     setRating(getRating);
-//   }
+//   // function handleRatingChange(getRating) {
+//   //   console.log(getRating, "getRating");
+//   //   setRating(getRating);
+//   // }
 
 //   function handleAddToCart(getCurrentProductId, getTotalStock) {
 //     let getCartItems = cartItems.items || [];
@@ -37,10 +36,7 @@
 //       if (indexOfCurrentItem > -1) {
 //         const getQuantity = getCartItems[indexOfCurrentItem].quantity;
 //         if (getQuantity + 1 > getTotalStock) {
-//           toast({
-//             title: `Only ${getQuantity} quantity can be added for this item`,
-//             variant: "destructive",
-//           });
+//           toast(`Only ${getQuantity} quantity can be added for this item`);
 
 //           return;
 //         }
@@ -62,45 +58,45 @@
 //     });
 //   }
 
-//   function handleDialogClose() {
-//     setOpen(false);
-//     dispatch(setProductDetails());
-//     setRating(0);
-//     setReviewMsg("");
-//   }
+//   // function handleDialogClose() {
+//   //   setOpen(false);
+//   //   dispatch(setProductDetails());
+//   //   setRating(0);
+//   //   setReviewMsg("");
+//   // }
 
-//   function handleAddReview() {
-//     dispatch(
-//       addReview({
-//         productId: productDetails?._id,
-//         userId: user?.id,
-//         userName: user?.userName,
-//         reviewMessage: reviewMsg,
-//         reviewValue: rating,
-//       })
-//     ).then((data) => {
-//       if (data.payload.success) {
-//         setRating(0);
-//         setReviewMsg("");
-//         dispatch(getReviews(productDetails?._id));
-//         toast({
-//           title: "Review added successfully!",
-//         });
-//       }
-//     });
-//   }
+//   // function handleAddReview() {
+//   //   dispatch(
+//   //     addReview({
+//   //       productId: productDetails?._id,
+//   //       userId: user?.id,
+//   //       userName: user?.userName,
+//   //       reviewMessage: reviewMsg,
+//   //       reviewValue: rating,
+//   //     })
+//   //   ).then((data) => {
+//   //     if (data.payload.success) {
+//   //       setRating(0);
+//   //       setReviewMsg("");
+//   //       dispatch(getReviews(productDetails?._id));
+//   //       toast({
+//   //         title: "Review added successfully!",
+//   //       });
+//   //     }
+//   //   });
+//   // }
 
-//   useEffect(() => {
-//     if (productDetails !== null) dispatch(getReviews(productDetails?._id));
-//   }, [productDetails]);
+//   // useEffect(() => {
+//   //   if (productDetails !== null) dispatch(getReviews(productDetails?._id));
+//   // }, [productDetails]);
 
-//   console.log(reviews, "reviews");
+//   // console.log(reviews, "reviews");
 
-//   const averageReview =
-//     reviews && reviews.length > 0
-//       ? reviews.reduce((sum, reviewItem) => sum + reviewItem.reviewValue, 0) /
-//         reviews.length
-//       : 0;
+//   // const averageReview =
+//   //   reviews && reviews.length > 0
+//   //     ? reviews.reduce((sum, reviewItem) => sum + reviewItem.reviewValue, 0) /
+//   //       reviews.length
+//   //     : 0;
 
 //   return (
 //     <Dialog open={open} onOpenChange={handleDialogClose}>
