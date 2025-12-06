@@ -26,12 +26,17 @@ import banner3 from "../../assets/banner-3.webp";
 
 function Shoppinghome() {
   const dispatch = useDispatch();
-  const { productList, productDetails } = useSelector(
+  // const { productList, productDetails } = useSelector(
+  //   (state) => state.shopProduct
+  // );
+   const { productList, productDetails } = useSelector(
     (state) => state.shopProduct
   );
+  console.log(productList, productDetails);
+  
   const { user } = useSelector((state) => state.auth);
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
-  const slides = { banner1, banner2, banner3 };
+  const slides = [banner1, banner2, banner3];
 
   const categoriesWithIcon = [
     { id: "men", label: "Men", icon: ShirtIcon },
@@ -76,24 +81,13 @@ function Shoppinghome() {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="relative w-full h-[600px]">
-        <img
-          src={slides?.banner1}
-          alt="banner1"
-          className="absolute top-0 left-0 w-full h-full object-cover "
-        />
-
-        <img
-          src={slides?.banner2}
-          alt="banner2"
-          className="absolute top-0 left-0 w-full h-full object-cover"
-        />
-
-        <img
-          src={slides?.banner3}
-          alt="banner3"
-          className="absolute top-0 left-0 w-full h-full object-cover "
-        />
-
+        {slides.map((slide) => (
+          <img
+            src={slide}
+            alt="banner1"
+            className="absolute top-0 left-0 w-full h-full object-cover"
+          />
+        ))}
         <Button
           variant="outline"
           className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/80 cursor-pointer"
@@ -107,6 +101,7 @@ function Shoppinghome() {
           <ChevronRightIcon className="w-4 h-4 " />
         </Button>
       </div>
+
       {/* section part  */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -119,10 +114,10 @@ function Shoppinghome() {
                 // onClick={() =>
                 //   handleNavigateToListingPage(categoryItem, "category")
                 // }
-                className="cursor-pointer hover:shadow-lg transition-shadow"
+                className="cursor-pointer hover:shadow-lg transition-shadow hover:bg-blue-400"
               >
-                <CardContent className="flex flex-col items-center justify-center p-6">
-                  <categoryItem.icon className="w-12 h-12 mb-4 text-primary" />
+                <CardContent className="flex flex-col items-center justify-center p-6 ">
+                  <categoryItem.icon className="w-12 h-12 mb-4 text-primary " />
                   <span className="font-bold">{categoryItem.label}</span>
                 </CardContent>
               </Card>

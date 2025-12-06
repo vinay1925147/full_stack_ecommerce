@@ -41,6 +41,8 @@ function Shoppinglist() {
   const { productList, productDetails } = useSelector(
     (state) => state.shopProduct
   );
+  console.log(productList ,"productList" , productDetails ,"productDetails" );
+  
   const { user } = useSelector((state) => state.auth);
   const {cartItems} = useSelector(state=> state.shopCart)
   const dispatch = useDispatch();
