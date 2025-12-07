@@ -41,7 +41,6 @@ const shoppingProductSlice = createSlice({
   reducers: {
     setProductDetails : (state,action)=>{
       state.productDetails=null
-
     }
   },
   extraReducers: (builder) => {

@@ -26,49 +26,44 @@ import {
 import { getCartItems } from "@/store/shop/cart-slice";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import UserCartWrapper from "./cart-wrapper";
+import { Label } from "../ui/label";
 
 function MenuItems() {
   const navigate = useNavigate();
   // const location = useLocation();
   // const [searchParams, setSearchParams] = useSearchParams();
 
-  // const handleNavigate = (getCurrentMenuItem) => {
-  //   sessionStorage.removeItem("filters");
-  //   const currentFilter =
-  //     getCurrentMenuItem.id !== "home" &&
-  //     getCurrentMenuItem.id !== "products" &&
-  //     getCurrentMenuItem.id !== "search"
-  //       ? {
-  //           category: [getCurrentMenuItem.id],
-  //         }
-  //       : null;
+  const handleNavigate = (getCurrentMenuItem) => {
+    sessionStorage.removeItem("filters");
+    const currentFilter =
+      getCurrentMenuItem.id !== "home" 
+      // getCurrentMenuItem.id !== "products" &&
+      // getCurrentMenuItem.id !== "search"
+        ? {
+            category: [getCurrentMenuItem.id]
+          }
+        : null;
 
-  //   sessionStorage.setItem("filters", JSON.stringify(currentFilter));
-
-  //   location.pathname.includes("listing") && currentFilter !== null
-  //     ? setSearchParams(
-  //         new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
-  //       )
-  //     : navigate(getCurrentMenuItem.path);
-  // };
+    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+  navigate(getCurrentMenuItem.path);
+    // location.pathname.includes("listing") && currentFilter !== null
+    //   ? setSearchParams(
+    //       new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
+    //     )
+    //   : navigate(getCurrentMenuItem.path);
+  };
 
   return (
     <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
       {shoppingViewHeaderMenuItems.map((menuItem) => (
-        // <Label
-        //   onClick={() => handleNavigate(menuItem)}
-        //   className="text-sm font-medium cursor-pointer"
-        //   key={menuItem.id}
-        // >
-        //  {menuItem.label}
-        // </Label>
-        <Link
-          to={menuItem.path}
+        <Label
+          onClick={() => handleNavigate(menuItem)}
+          className="text-md font-medium cursor-pointer"
           key={menuItem.id}
-          className="text-xl font-medium cursor-pointer"
         >
-          {menuItem.label}
-        </Link>
+         {menuItem.label}
+        </Label>
+       
       ))}
     </nav>
   );

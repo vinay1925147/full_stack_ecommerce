@@ -2,6 +2,7 @@ import ShoppingProductTile from "@/components/shoppig-view/product-tile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { addCartItems, getCartItems } from "@/store/shop/cart-slice";
+import { getAllFilterProduct } from "@/store/shop/product-slice";
 import {
   Airplay,
   BabyIcon,
@@ -19,6 +20,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import banner1 from "../../assets/banner-1.webp";
 import banner2 from "../../assets/banner-2.webp";
@@ -26,16 +28,13 @@ import banner3 from "../../assets/banner-3.webp";
 
 function Shoppinghome() {
   const dispatch = useDispatch();
-  // const { productList, productDetails } = useSelector(
-  //   (state) => state.shopProduct
-  // );
-   const { productList, productDetails } = useSelector(
+  const navigate = useNavigate();
+  const { productList, productDetails } = useSelector(
     (state) => state.shopProduct
   );
-  console.log(productList, productDetails);
-  
   const { user } = useSelector((state) => state.auth);
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [banner1, banner2, banner3];
 
   const categoriesWithIcon = [
@@ -55,6 +54,18 @@ function Shoppinghome() {
     { id: "h&m", label: "H&M", icon: Heater },
   ];
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+    }, 3000);
+
+    return () => clearInterval(timer);
+  }, [currentSlide]);
+
+  useEffect(() => {
+    dispatch(getAllFilterProduct({ filterParams: {}, sortParms: "" }));
+  }, [dispatch]);
+
   const handleGetProductDetails = (getCurrentProductId) => {
     dispatch(getCartItems(getCurrentProductId));
   };
@@ -72,7 +83,15 @@ function Shoppinghome() {
       }
     });
   };
+  const handleNavigateToListingPage = (getcurrentItem, type) => {
+    sessionStorage.removeItem("filters");
+    const currentFIlters = {
+      [type]: [getcurrentItem.id],
+    };
 
+    sessionStorage.setItem("filters", JSON.stringify(currentFIlters));
+    navigate("/shop/list");
+  };
   useEffect(() => {
     if (productDetails != null) {
       setOpenDetailsDialog(true);
@@ -81,22 +100,34 @@ function Shoppinghome() {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="relative w-full h-[600px]">
-        {slides.map((slide) => (
+        {slides.map((slide, index) => (
           <img
             src={slide}
             alt="banner1"
-            className="absolute top-0 left-0 w-full h-full object-cover"
+            className={`${
+              index === currentSlide ? "block" : "hidden"
+            } absolute top-0 left-0 w-full h-full object-cover `}
           />
         ))}
         <Button
           variant="outline"
           className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/80 cursor-pointer"
+          onClick={() => {
+            setCurrentSlide(
+              (prevSlide) => (prevSlide - 1 + slides.length) % slides.length
+            );
+          }}
         >
           <ChevronLeftIcon className="w-4 h-4" />
         </Button>
         <Button
           variant="outline"
           className="absolute top-1/2 right-6 transform -translate-y-1/2 bg-white cursor-pointer"
+          onClick={() => {
+            setCurrentSlide(
+              (prevSlide) => (prevSlide + 1 + slides.length) % slides.length
+            );
+          }}
         >
           <ChevronRightIcon className="w-4 h-4 " />
         </Button>
@@ -111,9 +142,9 @@ function Shoppinghome() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {categoriesWithIcon.map((categoryItem) => (
               <Card
-                // onClick={() =>
-                //   handleNavigateToListingPage(categoryItem, "category")
-                // }
+                onClick={() =>
+                  handleNavigateToListingPage(categoryItem, "category")
+                }
                 className="cursor-pointer hover:shadow-lg transition-shadow hover:bg-blue-400"
               >
                 <CardContent className="flex flex-col items-center justify-center p-6 ">
@@ -132,11 +163,11 @@ function Shoppinghome() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {brandsWithIcon.map((brandItem) => (
               <Card
-                // onClick={() => handleNavigateToListingPage(brandItem, "brand")}
-                className="cursor-pointer  hover:shadow-blue-800 transition-shadow  hover:bg-blue-400 "
+                onClick={() => handleNavigateToListingPage(brandItem, "brand")}
+                className="cursor-pointer transition-shadow  hover:bg-blue-400 "
               >
                 <CardContent className="flex flex-col items-center justify-center p-6">
-                  <brandItem.icon className="w-12 h-12 mb-4 text-primary" />
+                  <brandItem.icon className="w-12 h-12 mb-4 text-primary " />
                   <span className="font-bold">{brandItem.label}</span>
                 </CardContent>
               </Card>
@@ -163,12 +194,12 @@ function Shoppinghome() {
           </div>
         </div>
       </section>
-      {/* 
-       <ProductDetailsDialog
+
+      {/* <ProductDetailsDialog
         open={openDetailsDialog}
         setOpen={setOpenDetailsDialog}
         productDetails={productDetails}
-      /> */}
+      />  */}
     </div>
   );
 }
