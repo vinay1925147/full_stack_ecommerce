@@ -8,7 +8,8 @@ import mongoose from "mongoose";
 import adminRoute from "./routes/admin/product-route.js";
 import authRoute from "./routes/auth/auth-route.js";
 import shopProductRoute from "./routes/shop/product-route.js";
-import shopCartRoute from "./routes/shop/cart-route.js"
+import shopCartRoute from "./routes/shop/cart-route.js";
+import shopAddressRoute from "./routes/shop/address.route.js";
 const app = express();
 
 mongoose
@@ -38,11 +39,12 @@ app.get("/" , (req,res)=>{
 app.use("/api/auth", authRoute);
 app.use("/api/admin/product", adminRoute);
 app.use("/api/shop/product", shopProductRoute);
-app.use("/api/shop/cart",shopCartRoute)
+app.use("/api/shop/cart",shopCartRoute);
+app.use("/api/shop/address",shopAddressRoute);
 
 
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
+app.listen(PORT, () =>{
   console.log(`server is started at http://localhost:${PORT}`);
 });
