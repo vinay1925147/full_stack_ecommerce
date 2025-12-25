@@ -13,13 +13,15 @@ function UseCartWrapper({ setOpenCartSheet, cartItems }) {
             (currentItem?.salePrice > 0
               ? currentItem?.salePrice
               : currentItem?.price) *
-              currentItem.quantity,0
-        ) : 0
+              currentItem.quantity,
+          0
+        )
+      : 0;
   const navigate = useNavigate();
   return (
     <SheetContent className="px-2">
-       <SheetHeader>
-         <SheetTitle className="font-extrabold">Your Cart</SheetTitle>
+      <SheetHeader>
+        <SheetTitle className="font-extrabold">Your Cart</SheetTitle>
       </SheetHeader>
       <div className=" mt-2 space-y-4">
         {cartItems && cartItems.length > 0
@@ -31,7 +33,15 @@ function UseCartWrapper({ setOpenCartSheet, cartItems }) {
           <span className="font-bold">Cart</span>
           <span className="font-bold">${totalCartItem}</span>
         </div>
-        <Button className="w-full mt-4" onClick={()=>{navigate("/shop/checkout")}}>CheckOut</Button>
+        <Button
+          className="w-full mt-4"
+          onClick={() => {
+            navigate("/shop/checkout");
+            setOpenCartSheet(false);
+          }}
+        >
+          CheckOut
+        </Button>
       </div>
     </SheetContent>
   );
