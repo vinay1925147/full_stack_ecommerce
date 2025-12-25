@@ -5,7 +5,7 @@ const routes = express.Router();
 routes.post("/add", addAddress);//--> create
 routes.get("/get/:userId", getAddresses);//--> read
 routes.delete("/delete/:userId/:addressId", deleteAddress);//--> delete
-routes.put("/update/:userId/:addressId", editAddress); //--> update
+routes.put("/edit/:userId/:addressId", editAddress); //--> update
 
 export default routes;
 

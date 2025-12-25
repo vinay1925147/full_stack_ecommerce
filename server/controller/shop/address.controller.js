@@ -83,40 +83,51 @@ export const deleteAddress = async (req, res) => {
     });
   }
 };
+
+
 export const editAddress = async (req, res) => {
   try {
-    //
-    const {userId,addressId}=  req.params;
-    const {formData} = req.body;
-    if(!userId || !addressId){
+    const { userId, addressId } = req.params;
+    const { formData } = req.body;
+     console.log(formData)
+    if (!userId || !addressId) {
       return res.status(400).json({
-        msg : "userId and addressID is required",
-        success : false
-      })
+        msg: "userId and addressId are required",
+        success: false
+      });
     }
-     const editAddress = await Address.findOneAndUpdate(
-      {
-      _id: addressId, userId
-     },
-     formData,
-     {new :true}
-    )
-    if(!editAddress){
+
+    if (!formData || Object.keys(formData).length === 0) {
+      return res.status(400).json({
+        msg: "No data provided to update",
+        success: false
+      });
+    }
+
+    const updatedAddress = await Address.findOneAndUpdate(
+      { _id: addressId, userId },
+      formData,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedAddress) {
       return res.status(404).json({
         msg: "Address not found",
-        success: false,
+        success: false
       });
     }
 
     res.status(200).json({
-      msg : "Address edited successfully",
-      success :true,
-      data : editAddress
-    })
+      msg: "Address edited successfully",
+      success: true,
+      data: updatedAddress
+    });
+
   } catch (error) {
+    console.error("Edit Address Error:", error);
     res.status(500).json({
       msg: "Error editing address",
-      success: false,
+      success: false
     });
   }
 };

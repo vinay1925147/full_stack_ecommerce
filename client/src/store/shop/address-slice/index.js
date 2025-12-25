@@ -31,9 +31,10 @@ export const editAddress = createAsyncThunk(
   async ({ userId, addressId, formData }) => {
     const response = await axios.put(
       `http://localhost:8000/api/shop/address/edit/${userId}/${addressId}`,
-      formData
+      {formData},
+      { withCredentials: true }
     );
-    console.log(response);
+    
     return response.data;
   }
 );
@@ -50,19 +51,19 @@ export const deleteAddress = createAsyncThunk(
 );
 
 const shoppingAddressSlice = createSlice({
-  name: "shopaddress",
+  name: "shopAddress",
   initialState,
-  resducers: {},
-  extraReduecers: (builder) => {
+  reducers: {},
+  extraReducers: (builder) => {
     builder
       .addCase(addNewAddress.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(addNewAddress.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.addressList = action.payload.data;
+        state.addressList = action.payload.success? action.payload.data:null;
       })
-      .addCase(addNewAddress.rejected, (state, action) => {
+      .addCase(addNewAddress.rejected, (state) => {
         state.isLoading = false;
         state.addressList = [];
       })
@@ -71,9 +72,9 @@ const shoppingAddressSlice = createSlice({
       })
       .addCase(getAllAddress.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.addressList = action.payload.data;
+        state.addressList = action.payload.success? action.payload.data:null;
       })
-      .addCase(getAllAddress.rejected, (state, action) => {
+      .addCase(getAllAddress.rejected, (state) => {
         state.isLoading = false;
         state.addressList = [];
       })
