@@ -1,10 +1,20 @@
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import { Label } from "../ui/label";
-function AddressCard({ addressInfo, handleDeleteAddress, handleEditAddress }) {
+function AddressCard({
+  addressInfo,
+  handleDeleteAddress,
+  handleEditAddress,
+  setCurrentAddress,
+}) {
   return (
     <>
-      <Card>
+      <Card
+        onClick={() => {
+          setCurrentAddress(addressInfo);
+        }}
+        className="cursor-pointer hover:border-blue-400 hover:bg-gray-200"
+      >
         <CardContent className="grid gap-4 grid-cols-1 font-normal">
           <Label>
             {" "}
@@ -32,14 +42,14 @@ function AddressCard({ addressInfo, handleDeleteAddress, handleEditAddress }) {
         <CardFooter className="p-2 flex items-center justify-between">
           <Button
             onClick={() => {
-              handleEditAddress(addressInfo)
+              handleEditAddress(addressInfo);
             }}
           >
             Edit
           </Button>
           <Button
             onClick={() => {
-              handleDeleteAddress(addressInfo)
+              handleDeleteAddress(addressInfo);
             }}
           >
             Delete

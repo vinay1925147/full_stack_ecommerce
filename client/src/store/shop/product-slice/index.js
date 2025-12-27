@@ -36,10 +36,10 @@ export const getProductDetails = createAsyncThunk(
   }
 );
 const shoppingProductSlice = createSlice({
-  name: "shoppingProducts",
+  name: "shopProduct",
   initialState,
   reducers: {
-    setProductDetails : (state,action)=>{
+    setProductDetails : (state)=>{
       state.productDetails=null
     }
   },
@@ -50,7 +50,7 @@ const shoppingProductSlice = createSlice({
       })
       .addCase(getAllFilterProduct.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.productList = action.payload.data;
+        state.productList = action?.payload?.data;
       })
       .addCase(getAllFilterProduct.rejected, (state) => {
         state.isLoading = false;
@@ -61,7 +61,7 @@ const shoppingProductSlice = createSlice({
       })
       .addCase(getProductDetails.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.productDetails = action.payload.data;
+        state.productDetails = action?.payload?.data;
       })
       .addCase(getProductDetails.rejected, (state) => {
         state.isLoading = false;

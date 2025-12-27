@@ -1,21 +1,22 @@
+import { addCartItems, getCartItems } from "@/store/shop/cart-slice";
 import { setProductDetails } from "@/store/shop/product-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import StarRatingComponent from "../commen/star-rating";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent ,DialogTrigger} from "../ui/dialog";
+import { Dialog, DialogContent } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
-import { useDispatch } from "react-redux";
-
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
   // const [reviewMsg, setReviewMsg] = useState("");
   // const [rating, setRating] = useState(0);
-//   console.log(open)
+  //console.log(open)
   const dispatch = useDispatch();
-//   const { user } = useSelector((state) => state.auth);
-//   const { cartItems } = useSelector((state) => state.shopCart);
+  const { user } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.shopCart);
   // const { reviews } = useSelector((state) => state.shopReview);
 
   // function handleRatingChange(getRating) {
@@ -23,40 +24,39 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
   //   setRating(getRating);
   // }
 
-//   function handleAddToCart(getCurrentProductId, getTotalStock) {
-//     let getCartItems = cartItems.items || [];
+  function handleAddToCart(getCurrentProductId, getTotalStock) {
+    let getCartItem = cartItems.items || [];
 
-//     if (getCartItems.length) {
-//       const indexOfCurrentItem = getCartItems.findIndex(
-//         (item) => item.productId === getCurrentProductId
-//       );
-//       if (indexOfCurrentItem > -1) {
-//         const getQuantity = getCartItems[indexOfCurrentItem].quantity;
-//         if (getQuantity + 1 > getTotalStock) {
-//           toast(`Only ${getQuantity} quantity can be added for this item`);
-
-//           return;
-//         }
-//       }
-//     }
-//     dispatch(
-//       addToCart({
-//         userId: user?.id,
-//         productId: getCurrentProductId,
-//         quantity: 1,
-//       })
-//     ).then((data) => {
-//       if (data?.payload?.success) {
-//         dispatch(fetchCartItems(user?.id));
-//         toast({
-//           title: "Product is added to cart",
-//         });
-//       }
-//     });
-//   }
+    if (getCartItem.length) {
+      const indexOfCurrentItem = getCartItem.findIndex(
+        (item) => item.productId === getCurrentProductId
+      );
+      if (indexOfCurrentItem > -1) {
+        const getQuantity = getCartItem[indexOfCurrentItem].quantity;
+        if (getQuantity + 1 > getTotalStock) {
+          toast.success(
+            `Only ${getQuantity} quantity can be added for this item`
+          );
+          return;
+        }
+      }
+    }
+    dispatch(
+      addCartItems({
+        userId: user?.id,
+        productId: getCurrentProductId,
+        quantity: 1,
+      })
+    ).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(getCartItems(user?.id));
+        toast.success("Product is added to cart");
+      }
+    });
+  }
 
   function handleDialogClose() {
-    setOpen(true);
+    setOpen(false);
     dispatch(setProductDetails());
     // setRating(0);
     // setReviewMsg("");
@@ -87,7 +87,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
   //   if (productDetails !== null) dispatch(getReviews(productDetails?._id));
   // }, [productDetails]);
 
-  // console.log(reviews, "reviews");
+  
 
   // const averageReview =
   //   reviews && reviews.length > 0
@@ -107,7 +107,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
             className="aspect-square w-full object-cover"
           />
         </div>
-        <div className="">
+        <div className="bg-amber-400">
           <div>
             <h1 className="text-3xl font-extrabold">{productDetails?.title}</h1>
             <p className="text-muted-foreground text-2xl mb-5 mt-4">
@@ -131,8 +131,8 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
           <div className="flex items-center gap-2 mt-2">
             <div className="flex items-center gap-0.5">
               <StarRatingComponent
-            //    rating={averageReview} 
-               />
+              //    rating={averageReview}
+              />
             </div>
             <span className="text-muted-foreground">
               {/* ({averageReview.toFixed(2)}) */}
@@ -164,31 +164,31 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
             <div className="grid gap-6">
               {/* {reviews && reviews.length > 0 ? (
                 reviews.map((reviewItem) => ( */}
-                  <div className="flex gap-4">
-                    <Avatar className="w-10 h-10 border">
-                      <AvatarFallback>
-                        {/* {reviewItem?.userName[0].toUpperCase()} */}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="grid gap-1">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-bold">
-                            {/* {reviewItem?.userName} */}
-                            hello
-                            </h3>
-                      </div>
-                      <div className="flex items-center gap-0.5">
-                        <StarRatingComponent
-                        //  rating={reviewItem?.reviewValue}
-                          />
-                      </div>
-                      <p className="text-muted-foreground">
-                        {/* {reviewItem.reviewMessage} */}
-                        vinay 
-                      </p>
-                    </div>
+              <div className="flex gap-4">
+                <Avatar className="w-10 h-10 border">
+                  <AvatarFallback>
+                    {/* {reviewItem?.userName[0].toUpperCase()} */}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="grid gap-1">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-bold">
+                      {/* {reviewItem?.userName} */}
+                      hello
+                    </h3>
                   </div>
-                {/* ))
+                  <div className="flex items-center gap-0.5">
+                    <StarRatingComponent
+                    //  rating={reviewItem?.reviewValue}
+                    />
+                  </div>
+                  <p className="text-muted-foreground">
+                    {/* {reviewItem.reviewMessage} */}
+                    vinay
+                  </p>
+                </div>
+              </div>
+              {/* ))
               ) : (
                 <h1>No Reviews</h1>
               )} */}
@@ -208,15 +208,15 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                 placeholder="Write a review..."
               />
               <Button
-                // onClick={handleAddReview}
-                // disabled={reviewMsg.trim() === ""}
+              // onClick={handleAddReview}
+              // disabled={reviewMsg.trim() === ""}
               >
                 Submit
               </Button>
             </div>
           </div>
         </div>
-      </DialogContent>  
+      </DialogContent>
     </Dialog>
   );
 }

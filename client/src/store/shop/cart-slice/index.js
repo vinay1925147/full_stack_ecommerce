@@ -19,10 +19,10 @@ export const addCartItems = createAsyncThunk(
   }
 );
 
-export const getCartItems = createAsyncThunk("cart/getCart", async (userId) => {
+export const getCartItems = createAsyncThunk("cart/getCart", async (productId) => {
   const response = await axios.get(
-    `http://localhost:8000/api/shop/cart/get/${userId}`,
-    { withCredentials: true }
+    `http://localhost:8000/api/shop/cart/get/${productId}`,
+  
   );
   // console.log(response.data);
   return response.data;

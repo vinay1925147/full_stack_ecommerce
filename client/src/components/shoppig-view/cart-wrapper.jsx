@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import { SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 import UseCartItemContent from "./cart-item-content";
 
-function UseCartWrapper({ setOpenCartSheet, cartItems }) {
+function UseCartWrapper({ setOpenCartSheet, cartItems ,setOpenHeadrerSheet}) {
   // console.log(cartItems);
   const totalCartItem =
     cartItems && cartItems.length > 0
@@ -38,6 +38,7 @@ function UseCartWrapper({ setOpenCartSheet, cartItems }) {
           onClick={() => {
             navigate("/shop/checkout");
             setOpenCartSheet(false);
+            setOpenHeadrerSheet(false)
           }}
         >
           CheckOut

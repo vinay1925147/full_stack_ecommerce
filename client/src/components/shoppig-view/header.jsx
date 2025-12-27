@@ -69,12 +69,11 @@ function MenuItems() {
   );
 }
 
-function HeaderRightContent() {
+function HeaderRightContent({setOpenHeadrerSheet}) {
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
   // console.log(cartItems)
   const [openCartSheet, setOpenCartSheet] = useState(false);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -107,6 +106,7 @@ function HeaderRightContent() {
         </Button>
         <UserCartWrapper
           setOpenCartSheet={setOpenCartSheet}
+          setOpenHeadrerSheet={setOpenHeadrerSheet}
           cartItems={
             cartItems && cartItems.items && cartItems.items.length > 0
               ? cartItems.items
@@ -154,7 +154,7 @@ function HeaderRightContent() {
 
 function ShoppingHeader() {
   const { isAuthenticated } = useSelector((state) => state.auth);
-
+  const [opeHeaderSheet,setOpenHeadrerSheet] = useState(false)
   return (
     <header className="w-full border-b bg-background">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
@@ -164,7 +164,7 @@ function ShoppingHeader() {
         </Link>
 
         {/* small devices */}
-        <Sheet>
+        <Sheet open={opeHeaderSheet} onOpenChange={() => setOpenHeadrerSheet(true)}  >
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" className="lg:hidden">
               <Menu className="h-6 w-6" />
@@ -184,7 +184,7 @@ function ShoppingHeader() {
 
         {/* right */}
         <div className="hidden lg:block">
-          <HeaderRightContent />
+          <HeaderRightContent setOpenHeadrerSheet={setOpenHeadrerSheet} />
         </div>
       </div>
     </header>

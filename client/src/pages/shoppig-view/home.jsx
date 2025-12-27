@@ -2,7 +2,7 @@ import ShoppingProductTile from "@/components/shoppig-view/product-tile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { addCartItems, getCartItems } from "@/store/shop/cart-slice";
-import { getAllFilterProduct } from "@/store/shop/product-slice";
+import { getAllFilterProduct, getProductDetails } from "@/store/shop/product-slice";
 import {
   Airplay,
   BabyIcon,
@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 import banner1 from "../../assets/banner-1.webp";
 import banner2 from "../../assets/banner-2.webp";
 import banner3 from "../../assets/banner-3.webp";
+import ProductDetailsDialog from "@/components/shoppig-view/product-details";
 
 function Shoppinghome() {
   const dispatch = useDispatch();
@@ -58,7 +59,6 @@ function Shoppinghome() {
     const timer = setTimeout(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
     }, 3000);
-
     return () => clearInterval(timer);
   }, [currentSlide]);
 
@@ -66,9 +66,11 @@ function Shoppinghome() {
     dispatch(getAllFilterProduct({ filterParams: {}, sortParms: "" }));
   }, [dispatch]);
 
-  const handleGetProductDetails = (getCurrentProductId) => {
-    dispatch(getCartItems(getCurrentProductId));
-  };
+ 
+    const handleGetProductDetails = (getCurrentProductId) => {
+   
+      dispatch(getProductDetails(getCurrentProductId));
+    };
   const handleAddtoCart = (getCurrentProductId) => {
     dispatch(
       addCartItems({
@@ -97,6 +99,11 @@ function Shoppinghome() {
       setOpenDetailsDialog(true);
     }
   }, [productDetails]);
+
+
+  
+  console.log(productList,"productList" ,productDetails,"productDetails");
+  
   return (
     <div className="flex flex-col min-h-screen">
       <div className="relative w-full h-[600px]">
@@ -133,7 +140,7 @@ function Shoppinghome() {
         </Button>
       </div>
 
-      {/* section part  */}
+      {/* section part by category */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">
@@ -157,6 +164,7 @@ function Shoppinghome() {
         </div>
       </section>
 
+      {/* section part by brand */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">Shop by Brand</h2>
@@ -176,6 +184,7 @@ function Shoppinghome() {
         </div>
       </section>
 
+  {/* section part by product */}
       <section className="py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">
@@ -195,11 +204,11 @@ function Shoppinghome() {
         </div>
       </section>
 
-      {/* <ProductDetailsDialog
+      <ProductDetailsDialog
         open={openDetailsDialog}
         setOpen={setOpenDetailsDialog}
         productDetails={productDetails}
-      />  */}
+      /> 
     </div>
   );
 }

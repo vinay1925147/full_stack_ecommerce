@@ -16,7 +16,7 @@ import ShoppingOrderDetailsView from "./order-details";
 function ShippingOrder() {
   const [openDetailsDialog,setOpenDetailsDialog] = useState(false)
   return (
-      <Card>
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>Order History</CardTitle>
         </CardHeader>
@@ -67,7 +67,7 @@ function ShippingOrder() {
                         >
                           View Details
                         </Button>
-                        <ShoppingOrderDetailsView  />
+                        <ShoppingOrderDetailsView />                       
                       </Dialog>
                     </TableCell>
               </TableRow>

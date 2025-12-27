@@ -19,7 +19,7 @@ const initialFormData = {
   phone: "",
   notes: "",
 };
-function Address() {
+function Address({setCurrentAddress}) {
   const [formData, setFormData] = useState(initialFormData);
   const [currentDataId, setCurrentDataId] = useState(null);
   const dispatch = useDispatch();
@@ -112,6 +112,7 @@ function Address() {
                 handleDeleteAddress={handleDeleteAddress}
                 handleEditAddress={handleEditAddress}
                 addressInfo={singleAddress}
+                setCurrentAddress={setCurrentAddress}
               />
             ))
           : null}
