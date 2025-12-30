@@ -1,8 +1,12 @@
+import ProductDetailsDialog from "@/components/shoppig-view/product-details";
 import ShoppingProductTile from "@/components/shoppig-view/product-tile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { addCartItems, getCartItems } from "@/store/shop/cart-slice";
-import { getAllFilterProduct, getProductDetails } from "@/store/shop/product-slice";
+import {
+  getAllFilterProduct,
+  getProductDetails,
+} from "@/store/shop/product-slice";
 import {
   Airplay,
   BabyIcon,
@@ -25,7 +29,7 @@ import { toast } from "react-toastify";
 import banner1 from "../../assets/banner-1.webp";
 import banner2 from "../../assets/banner-2.webp";
 import banner3 from "../../assets/banner-3.webp";
-import ProductDetailsDialog from "@/components/shoppig-view/product-details";
+import ShoppingHeader from "@/components/shoppig-view/header";
 
 function Shoppinghome() {
   const dispatch = useDispatch();
@@ -66,11 +70,9 @@ function Shoppinghome() {
     dispatch(getAllFilterProduct({ filterParams: {}, sortParms: "" }));
   }, [dispatch]);
 
- 
-    const handleGetProductDetails = (getCurrentProductId) => {
-   
-      dispatch(getProductDetails(getCurrentProductId));
-    };
+  const handleGetProductDetails = (getCurrentProductId) => {
+    dispatch(getProductDetails(getCurrentProductId));
+  };
   const handleAddtoCart = (getCurrentProductId) => {
     dispatch(
       addCartItems({
@@ -100,12 +102,11 @@ function Shoppinghome() {
     }
   }, [productDetails]);
 
+ 
 
-  
-  console.log(productList,"productList" ,productDetails,"productDetails");
-  
   return (
     <div className="flex flex-col min-h-screen">
+      
       <div className="relative w-full h-[600px]">
         {slides.map((slide, index) => (
           <img
@@ -184,7 +185,7 @@ function Shoppinghome() {
         </div>
       </section>
 
-  {/* section part by product */}
+      {/* section part by product */}
       <section className="py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">
@@ -208,7 +209,7 @@ function Shoppinghome() {
         open={openDetailsDialog}
         setOpen={setOpenDetailsDialog}
         productDetails={productDetails}
-      /> 
+      />
     </div>
   );
 }

@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 import App from "./App.jsx";
 import "./index.css";
 import store from "./store/Store.js";
-import StarRatingComponent from "./components/commen/star-rating.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>

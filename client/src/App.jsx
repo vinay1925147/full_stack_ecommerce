@@ -17,12 +17,11 @@ import Shoppingcheckout from "./pages/shoppig-view/checkout";
 import Shoppinghome from "./pages/shoppig-view/home";
 import Shoppinglist from "./pages/shoppig-view/listing";
 import Shoppingorder from "./pages/shoppig-view/order";
-import Unauth from "./pages/un-auth/unauth";
-import { checkAuth } from "./store/auth-slice";
 import PaypalReturn from "./pages/shoppig-view/paypal-return";
-import PaypalCancle from "./pages/shoppig-view/paypal-cancle";
 import PaypalSuccessPage from "./pages/shoppig-view/paypal.success";
 import SearchProduct from "./pages/shoppig-view/searchbar";
+import Unauth from "./pages/un-auth/unauth";
+import { checkAuth } from "./store/auth-slice";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,6 +42,7 @@ function App() {
 
   return (
     <>
+    
       <div className="flex flex-col overflow-hidden bg-white">
         <Routes>
           {/* Auth layout - login and register */}
@@ -90,15 +90,17 @@ function App() {
             <Route path="list" element={<Shoppinglist />} />
             <Route path="checkout" element={<Shoppingcheckout />} />
             <Route path="order" element={<Shoppingorder />} />
-            <Route path="paypal-return" element={<PaypalReturn/>}/>
-           
-            <Route path="paypal-success"element={<PaypalSuccessPage/>}/>
-              <Route path="search"element={<SearchProduct/>}/>
+            <Route path="paypal-return" element={<PaypalReturn />} />
+            <Route path="paypal-success" element={<PaypalSuccessPage />} />
+            <Route path="search" element={<SearchProduct />} />
           </Route>
 
           {/* not found page */}
           <Route path="*" element={<Notfound />}></Route>
           <Route path="/unauth-page" element={<Unauth />} />
+          <Route path="/" element={<Shoppinglayout/>}>
+              <Route path="/" element={<Shoppinghome/>}/>
+          </Route>
         </Routes>
       </div>
     </>

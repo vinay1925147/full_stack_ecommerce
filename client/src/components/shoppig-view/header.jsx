@@ -11,7 +11,12 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Button } from "../ui/button";
 import {
@@ -24,33 +29,31 @@ import {
 } from "../ui/dropdown-menu";
 // import { Label } from "../ui/label";
 import { getCartItems } from "@/store/shop/cart-slice";
+import { Label } from "../ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import UserCartWrapper from "./cart-wrapper";
-import { Label } from "../ui/label";
 
 function MenuItems() {
   const navigate = useNavigate();
-  // const location = useLocation();
-  // const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleNavigate = (getCurrentMenuItem) => {
     sessionStorage.removeItem("filters");
-    const currentFilter =
-      getCurrentMenuItem.id !== "home" 
-      // getCurrentMenuItem.id !== "products" &&
-      // getCurrentMenuItem.id !== "search"
-        ? {
-            category: [getCurrentMenuItem.id]
-          }
-        : null;
+    const currentFilter = getCurrentMenuItem.id !== "home";
+    getCurrentMenuItem.id !== "products" && getCurrentMenuItem.id !== "search"
+      ? {
+          category: [getCurrentMenuItem.id],
+        }
+      : null;
 
     sessionStorage.setItem("filters", JSON.stringify(currentFilter));
-  navigate(getCurrentMenuItem.path);
-    // location.pathname.includes("listing") && currentFilter !== null
-    //   ? setSearchParams(
-    //       new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
-    //     )
-    //   : navigate(getCurrentMenuItem.path);
+    navigate(getCurrentMenuItem.path);
+    location.pathname.includes("listing") && currentFilter !== null
+      ? setSearchParams(
+          new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
+        )
+      : navigate(getCurrentMenuItem.path);
   };
 
   return (
@@ -58,18 +61,17 @@ function MenuItems() {
       {shoppingViewHeaderMenuItems.map((menuItem) => (
         <Label
           onClick={() => handleNavigate(menuItem)}
-          className="text-md font-medium cursor-pointer"
+          className="text-md font-medium p-3  rounded-2xl cursor-pointer hover:bg-gray-100 hover:text-gray-900"
           key={menuItem.id}
         >
-         {menuItem.label}
+          {menuItem.label}
         </Label>
-       
       ))}
     </nav>
   );
 }
 
-function HeaderRightContent({setOpenHeadrerSheet}) {
+function HeaderRightContent({ setOpenHeadrerSheet }) {
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
   // console.log(cartItems)
@@ -87,23 +89,28 @@ function HeaderRightContent({setOpenHeadrerSheet}) {
 
   console.log(cartItems, "catItem");
 
-  const handleCart = () => {};
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
       {/* cart option */}
-      <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)} className="w-5/6">
-        <Button
-          onClick={() => setOpenCartSheet(true)}
-          variant="outline"
-          size="icon"
-          className="relative p-4 cursor-pointer"
-        >
-          <ShoppingCart className="w-9 h-9 " />
-          <span className="absolute top-[-5px] right-0.5 font-bold text-sm">
-            {cartItems?.items?.length || 0}
-          </span>
-          <span className="sr-only">User cart</span>
-        </Button>
+      <Sheet
+        open={openCartSheet}
+        onOpenChange={() => setOpenCartSheet(false)}
+        className="w-5/6"
+      >
+          <Button
+            onClick={() => setOpenCartSheet(true)}
+            variant="outline"
+            size="icon"
+            className="relative p-4 cursor-pointer"
+          >
+            <ShoppingCart className="w-9 h-9 " />
+            <span className="absolute top-[-5px] right-0.5 font-bold text-sm">
+              {cartItems?.items?.length || 0}
+            </span>
+            <span className="sr-only">User cart</span>
+          </Button>
+     
+
         <UserCartWrapper
           setOpenCartSheet={setOpenCartSheet}
           setOpenHeadrerSheet={setOpenHeadrerSheet}
@@ -154,7 +161,7 @@ function HeaderRightContent({setOpenHeadrerSheet}) {
 
 function ShoppingHeader() {
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const [opeHeaderSheet,setOpenHeadrerSheet] = useState(false)
+  const [opeHeaderSheet, setOpenHeadrerSheet] = useState(false);
   return (
     <header className="w-full border-b bg-background">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
@@ -164,7 +171,10 @@ function ShoppingHeader() {
         </Link>
 
         {/* small devices */}
-        <Sheet open={opeHeaderSheet} onOpenChange={() => setOpenHeadrerSheet(true)}  >
+        <Sheet
+          open={opeHeaderSheet}
+          onOpenChange={() => setOpenHeadrerSheet(true)}
+        >
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" className="lg:hidden">
               <Menu className="h-6 w-6" />

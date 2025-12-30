@@ -7,6 +7,7 @@ import shoppingProductSlice from "./shop/product-slice";
 import shoppingAddressSlice from "./shop/address-slice";
 import ShoppingOrderSlice from  "./shop/order-slice"
 import ShoppingSearchSlice from  "./shop/search-slice"
+import ShoppingReviewSlice from  "./shop/review-slice"
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -16,8 +17,8 @@ const store = configureStore({
     shopCart: shoppingCartSlice,
     shopAddress : shoppingAddressSlice,
     shopOrder:ShoppingOrderSlice,
-    shopSearch:ShoppingSearchSlice
-
+    shopSearch:ShoppingSearchSlice,
+    shopReview :ShoppingReviewSlice
   },
 });
 export default store;

@@ -12,9 +12,9 @@ export const createNewOrder = createAsyncThunk(
   async (orderData) => {
     const response = await axios.post(
       "http://localhost:8000/api/shop/order/create",
-      orderData
+     { orderData}
     );
-    //  console.log(response.data,response);
+     console.log(response.data,response);
     return response.data;
   }
 );
@@ -45,7 +45,7 @@ const ShoppingOrderSlice = createSlice({
       })
       .addCase(createNewOrder.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.approvalURL = action?.payload?.approvalURL;
+        // state.approvalURL = action?.payload?.approvalURL;
         state.orderId = action.payload.orderId;
         sessionStorage.setItem(
           "currentOrderId",
@@ -54,7 +54,7 @@ const ShoppingOrderSlice = createSlice({
       })
       .addCase(createNewOrder.rejected, (state) => {
         state.isLoading = false;
-        state.approvalURL = null;
+        // state.approvalURL = null;
         state.orderId = null;
       });
   },

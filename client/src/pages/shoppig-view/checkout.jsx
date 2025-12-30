@@ -9,6 +9,9 @@ import { createNewOrder } from "@/store/shop/order-slice";
 
 function Shoppingcheckout() {
   const { cartItems } = useSelector((state) => state.shopCart);
+
+  console.log("cartItems", cartItems);
+  
   const { user } = useSelector((state) => state.auth);
 
    const { orderId, approvalURL } = useSelector((state) => state.shopOrder);
@@ -35,7 +38,7 @@ function Shoppingcheckout() {
       userId: user?.id,
       cartId: cartItems?._id,
       cartItems: cartItems?.items.map((singleCartItem) => ({
-        productId: singleCartItem._id,
+        productId: singleCartItem.productId,
         title: singleCartItem.title,
         price:
           singleCartItem.salePrice > 0
@@ -52,8 +55,8 @@ function Shoppingcheckout() {
         notes: currentAddress?.notes,
       },
       orderStatus: "pending",
-      paymentMethod: "paypal",
-      paymentStatus: "pending",
+      paymentMethod: "Razorpay",
+      paymentStatus: "PENDING",
       totalAmount: totalCartAmount,
       orderDate: new Date(),
       orderUpdateDate: new Date(),
@@ -62,19 +65,16 @@ function Shoppingcheckout() {
     };
     console.log(orderData, "orderData");
     dispatch(createNewOrder(orderData)).then((data)=>{
-      // console.log(data); action=== data
-      // data.payload.success ? setIsPayment(true) : setIsPayment(false)
-      if(data.payload.success){
-        setIsPayment(true);
-      }else{
-        setIsPayment(false);
-      }
+      // if(data.payload.success){
+      //   setIsPayment(true);
+      // }else{
+      //   setIsPayment(false);
+      // }
+      console.log(data)
     })
   };
 
-  if(approvalURL){
-    window.location.href = approvalURL
-  }
+
   console.log(currentAddress);
    console.log(orderId,"orderId",approvalURL,"approvalURL")
   return (
@@ -90,7 +90,6 @@ function Shoppingcheckout() {
         </div>
 
         {/* Checkout Content */}
-
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* LEFT SIDE – Address Section */}
           <div className="bg-white rounded-lg shadow p-6">

@@ -21,7 +21,7 @@ function UseCartWrapper({ setOpenCartSheet, cartItems ,setOpenHeadrerSheet}) {
   return (
     <SheetContent className="px-2">
       <SheetHeader>
-        <SheetTitle className="font-extrabold">Your Cart</SheetTitle>
+        <SheetTitle className="font-bold text-[22px]">Your Cart</SheetTitle>
       </SheetHeader>
       <div className=" mt-2 space-y-4">
         {cartItems && cartItems.length > 0
@@ -34,7 +34,7 @@ function UseCartWrapper({ setOpenCartSheet, cartItems ,setOpenHeadrerSheet}) {
           <span className="font-bold">${totalCartItem}</span>
         </div>
         <Button
-          className="w-full mt-4"
+          className="w-full mt-4 text-[16px] cursor-pointer bg-blue-600 hover:bg-blue-800"
           onClick={() => {
             navigate("/shop/checkout");
             setOpenCartSheet(false);

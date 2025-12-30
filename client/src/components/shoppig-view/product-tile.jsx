@@ -2,6 +2,7 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import { brandOptionsMap, categoryOptionsMap } from "@/config";
 import { Badge } from "../ui/badge";
+import StarRatingComponent from "../commen/star-rating";
 
 function ShoppingProductTile({
   product,
@@ -10,7 +11,7 @@ function ShoppingProductTile({
 }) {
   return (
     <>
-      <Card className="w-full max-w-sm mx-auto">
+      {/* <Card className="w-full max-w-sm mx-auto">
         <div onClick={() => handleGetProductDetails(product?._id)}>
           <div className="relative ">
             <img
@@ -49,11 +50,11 @@ function ShoppingProductTile({
                   product?.salePrice > 0 ? "line-through" : ""
                 } text-lg font-semibold text-primary`}
               >
-                Rs{product?.price}
+                ${product?.price}
               </span>
               {product?.salePrice > 0 ? (
                 <span className="text-lg font-semibold text-primary">
-                  Rs{product?.salePrice}
+                  ${product?.salePrice}
                 </span>
               ) : null}
             </div>
@@ -74,7 +75,99 @@ function ShoppingProductTile({
             </Button>
           )}
         </CardFooter>
-      </Card>
+      </Card> */}
+
+      <Card className="group w-full max-w-sm mx-auto overflow-hidden rounded-xl border bg-background shadow-sm hover:shadow-lg transition-all duration-300">
+  
+  {/* IMAGE */}
+  <div
+    onClick={() => handleGetProductDetails(product?._id)}
+    className="relative cursor-pointer overflow-hidden"
+  >
+    <img
+      src={product?.image}
+      alt={product?.title}
+      className="h-[260px] w-full object-cover transition-transform duration-300 group-hover:scale-105"
+    />
+
+    {/* BADGES */}
+    {product?.totalStock === 0 ? (
+      <Badge className="absolute top-3 left-3 bg-red-600">
+        Out of Stock
+      </Badge>
+    ) : product?.totalStock < 10 ? (
+      <Badge className="absolute top-3 left-3 bg-orange-500">
+        Only {product?.totalStock} left
+      </Badge>
+    ) : product?.salePrice > 0 ? (
+      <Badge className="absolute top-3 left-3 bg-green-600">
+        {Math.round(
+          ((product.price - product.salePrice) / product.price) * 100
+        )}
+        % OFF
+      </Badge>
+    ) : null}
+  </div>
+
+  {/* CONTENT */}
+  <CardContent className="p-4 space-y-2">
+    {/* TITLE */}
+    <h2
+      onClick={() => handleGetProductDetails(product?._id)}
+      className="font-semibold text-lg leading-tight line-clamp-2 cursor-pointer hover:text-primary"
+    >
+      {product?.title}
+    </h2>
+
+    {/* CATEGORY & BRAND */}
+    <div className="flex justify-between text-sm text-muted-foreground">
+      <span>{categoryOptionsMap[product?.category]}</span>
+      <span>{brandOptionsMap[product?.brand]}</span>
+    </div>
+
+    {/* RATING */}
+    <div className="flex items-center gap-1 text-sm">
+      <StarRatingComponent rating={product?.averageRating || 4} />
+      <span className="text-muted-foreground">(120)</span>
+    </div>
+
+    {/* PRICE */}
+    <div className="flex items-center gap-3 mt-2">
+      <span
+        className={`text-lg font-bold ${
+          product?.salePrice > 0
+            ? "line-through text-muted-foreground"
+            : "text-primary"
+        }`}
+      >
+        ${product?.price}
+      </span>
+
+      {product?.salePrice > 0 && (
+        <span className="text-xl font-bold text-green-600">
+          ${product?.salePrice}
+        </span>
+      )}
+    </div>
+  </CardContent>
+
+  {/* FOOTER CTA */}
+  <CardFooter className="p-4 pt-0">
+    {product?.totalStock === 0 ? (
+      <Button disabled className="w-full">
+        Out of Stock
+      </Button>
+    ) : (
+      <Button
+        onClick={() => handleAddtoCart(product?._id, product?.totalStock)}
+        className="w-full transition-all group-hover:bg-primary/90"
+      >
+        Add to Cart
+      </Button>
+    )}
+  </CardFooter>
+</Card>
+
     </>
   );
 }

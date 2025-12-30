@@ -1,12 +1,24 @@
-import { Dialog, DialogTrigger } from "../ui/dialog"
+import { StarIcon } from "lucide-react";
+import { Button } from "../ui/button";
 
-function StarRatingComponent(){
-    return <>
-      <Dialog>
-        <DialogTrigger aschild>
-            <span>Star Rating Component</span>
-        </DialogTrigger>
-      </Dialog>
-    </>
+function StarRatingComponent({ rating, handleRatingChange }) {
+  // console.log(rating, "rating");
+  return [1,2,3,4,5].map((star) => (
+    <Button
+      className={
+        `p-2 rounded-full transition-colors ${ star <= rating ? "text-yello-500 hover:bg-black" : "text-black hover:bg-primary hover:text-primary-foreground "}` 
+    }
+      variant="outline"
+      size="icon"
+      onClick={handleRatingChange ? () => handleRatingChange(star) : null}
+    >
+      <StarIcon
+        className={` ${
+          star <= rating ? "text-2xl fill-yellow-500 " : "fill-black"
+        }`}
+      />
+    </Button>
+  ));
 }
-export default StarRatingComponent
+
+export default StarRatingComponent;
